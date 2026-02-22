@@ -95,9 +95,10 @@
     const [h, m] = str.split(':').map(Number);
     const d = new Date(); d.setHours(h, m, 0, 0); return d;
   }
-  function parseTimeTomorrow (str) {
+  function parseTimeNextDay (str) {
+    // Next wake time ALWAYS means tomorrow — never today
     const d = parseTimeToday(str);
-    if (d <= new Date()) d.setDate(d.getDate() + 1);
+    d.setDate(d.getDate() + 1);
     return d;
   }
   function minutesBetween (a, b) { return (b - a) / 60000; }
@@ -163,7 +164,7 @@
   /* ── Scheduling Engine ── */
   function buildSchedule (wakeStr, nextWakeStr, mood) {
     const now = new Date();
-    const sleepTime = addMinutes(parseTimeTomorrow(nextWakeStr), -8 * 60);
+    const sleepTime = addMinutes(parseTimeNextDay(nextWakeStr), -8 * 60);
     const windDownStart = addMinutes(sleepTime, -WIND_DOWN_DURATION);
     let cursor = new Date(Math.max(now.getTime(), parseTimeToday(wakeStr).getTime()));
 
@@ -427,7 +428,7 @@
     const wakeTime = parseTimeToday(wakeStr);
     const now = new Date();
     const startTime = new Date(Math.max(now.getTime(), wakeTime.getTime()));
-    const sleepTime = addMinutes(parseTimeTomorrow(nextWakeStr), -8 * 60);
+    const sleepTime = addMinutes(parseTimeNextDay(nextWakeStr), -8 * 60);
     const windDown = addMinutes(sleepTime, -WIND_DOWN_DURATION);
     const availHours = Math.max(0, minutesBetween(startTime, windDown) / 60);
 
@@ -764,7 +765,10 @@
       const div = document.createElement('div');
       div.className = 'history-activity';
       div.innerHTML =
-        '<div class="ha-name">' + act.emoji + ' ' + escapeHtml(act.name) + '</div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+          '<div class="ha-name">' + act.emoji + ' ' + escapeHtml(act.name) + '</div>' +
+          '<button class="btn btn-danger btn-small" data-id="' + act.id + '" style="padding:4px 8px;font-size:0.65rem;">Clear</button>' +
+        '</div>' +
         '<div class="ha-stats">' +
           hist.length + ' sessions · avg ' + fmtDuration(avg) +
           (isLearned ? ' · <span style="color:#6c63ff">learned — using real avg</span>' : ' · ' + (ROLLING_THRESHOLD - hist.length) + ' more to learn') +
@@ -772,6 +776,16 @@
         '</div>' +
         '<div class="history-bar"><div class="history-bar-fill" style="width:' + Math.min(100, (hist.length / ROLLING_THRESHOLD) * 100) + '%"></div></div>';
       container.appendChild(div);
+    });
+
+    container.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const id = this.dataset.id;
+        if (!confirm('Clear all history for this activity? The learning engine will reset to default duration.')) return;
+        delete activityHistory[id];
+        save('dayos_history', activityHistory);
+        renderStats();
+      });
     });
 
     if (!hasData) {
@@ -802,9 +816,18 @@
       row.innerHTML =
         '<span class="recent-day-date">' + fmtDateShort(d) + '</span>' +
         '<div class="recent-day-blocks">' + dots + '</div>' +
-        '<span class="recent-day-count">' + day.blocks + 'b · ' + fmtDuration(day.totalMinutes) + '</span>';
+        '<span class="recent-day-count">' + day.blocks + 'b · ' + fmtDuration(day.totalMinutes) + '</span>' +
+        '<button class="btn btn-danger btn-small" data-date="' + day.date + '" style="padding:4px 8px;font-size:0.7rem;margin-left:6px;">✕</button>';
       container.appendChild(row);
     }
+    container.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const date = this.dataset.date;
+        dayLog = dayLog.filter(d => d.date !== date);
+        save('dayos_daylog', dayLog);
+        renderStats();
+      });
+    });
   }
 
   function renderNotesJournal () {
@@ -817,18 +840,31 @@
     }
 
     const recent = notes.slice(-20).reverse();
-    for (const note of recent) {
+    for (let ni = 0; ni < recent.length; ni++) {
+      const note = recent[ni];
       const d = new Date(note.time);
+      const noteIdx = notes.length - 1 - ni; // index in the original array
       const entry = document.createElement('div');
       entry.className = 'note-entry';
       entry.innerHTML =
         '<div class="note-entry-header">' +
           '<span class="note-entry-activity">' + note.emoji + ' ' + escapeHtml(note.activityName) + '</span>' +
-          '<span class="note-entry-date">' + fmtDateShort(d) + ' ' + fmtTime(d) + '</span>' +
+          '<span style="display:flex;align-items:center;gap:6px;">' +
+            '<span class="note-entry-date">' + fmtDateShort(d) + ' ' + fmtTime(d) + '</span>' +
+            '<button class="btn btn-danger btn-small" data-idx="' + noteIdx + '" style="padding:2px 6px;font-size:0.65rem;">✕</button>' +
+          '</span>' +
         '</div>' +
         '<div class="note-entry-text">' + escapeHtml(note.text) + '</div>';
       container.appendChild(entry);
     }
+    container.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const idx = parseInt(this.dataset.idx);
+        notes.splice(idx, 1);
+        save('dayos_notes', notes);
+        renderNotesJournal();
+      });
+    });
   }
 
   /* ── Settings Screen ── */
@@ -1010,6 +1046,21 @@
     requestNotifPermission();
 
     const result = buildSchedule(wakeStr, nextWakeStr, mood);
+
+    // Validate: must have at least one real block (not just wind-down + sleep)
+    const realBlocks = result.blocks.filter(b => b.type !== 'winddown' && b.type !== 'sleep');
+    if (realBlocks.length === 0) {
+      const sleepAt = fmtTime(result.sleepTime);
+      const windAt = fmtTime(result.windDownStart);
+      alert(
+        'Not enough time to schedule anything!\n\n' +
+        'With tomorrow\'s wake time at ' + nextWakeStr + ', your calculated bedtime is ' + sleepAt +
+        ' and wind-down starts at ' + windAt + '.\n\n' +
+        'That leaves no room for activities. Try setting a later wake time for tomorrow so your bedtime moves later.'
+      );
+      return;
+    }
+
     todaySchedule = result.blocks;
     blockNotes = {};
     save('dayos_blocknotes', blockNotes);
