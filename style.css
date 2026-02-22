@@ -1,0 +1,560 @@
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: #0f1117;
+  color: #e0e0e0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+
+/* ── Screen container ── */
+.screen {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 20px 100px;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ── Typography ── */
+h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 8px; }
+h2 { font-size: 1.35rem; font-weight: 600; margin-bottom: 12px; color: #c0c0c0; }
+h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; color: #b0b0b0; }
+p { line-height: 1.5; color: #a0a0a0; }
+
+/* ── Brand ── */
+.brand { color: #6c63ff; }
+.brand-sub { font-size: 0.9rem; color: #666; margin-bottom: 32px; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: #6c63ff;
+  color: #fff;
+  width: 100%;
+  padding: 18px;
+  font-size: 1.15rem;
+  border-radius: 16px;
+}
+.btn-primary:hover { background: #5a52e0; }
+
+.btn-secondary {
+  background: #1e2030;
+  color: #c0c0c0;
+  border: 1px solid #2a2d40;
+}
+.btn-secondary:hover { background: #262940; }
+
+.btn-done {
+  background: #2ecc71;
+  color: #fff;
+  width: 100%;
+  padding: 20px;
+  font-size: 1.3rem;
+  border-radius: 18px;
+}
+.btn-done:hover { background: #27ae60; }
+
+.btn-danger {
+  background: #1e2030;
+  color: #e74c3c;
+  border: 1px solid #3a1a1a;
+}
+.btn-danger:hover { background: #2a1520; }
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 10px;
+}
+
+/* ── Form Elements ── */
+input[type="time"],
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 14px 16px;
+  background: #1a1d2e;
+  border: 1px solid #2a2d40;
+  border-radius: 12px;
+  color: #e0e0e0;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+input:focus, select:focus {
+  border-color: #6c63ff;
+}
+input[type="time"] {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* ── Mood Selector ── */
+.mood-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.mood-btn {
+  flex: 1;
+  padding: 12px 8px;
+  background: #1a1d2e;
+  border: 2px solid #2a2d40;
+  border-radius: 12px;
+  color: #a0a0a0;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mood-btn .mood-emoji {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+.mood-btn.active {
+  border-color: #6c63ff;
+  background: #1c1f38;
+  color: #e0e0e0;
+}
+
+/* ── Cards ── */
+.card {
+  background: #1a1d2e;
+  border: 1px solid #2a2d40;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+/* ── Block View (Focus Card) ── */
+.focus-card {
+  background: #1a1d2e;
+  border: 2px solid #6c63ff;
+  border-radius: 24px;
+  padding: 40px 24px;
+  text-align: center;
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+.focus-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #6c63ff, #a78bfa);
+}
+.focus-card.enrichment {
+  border-color: #f0a050;
+}
+.focus-card.enrichment::before {
+  background: linear-gradient(90deg, #f0a050, #f7c988);
+}
+.focus-card .block-emoji {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+.focus-card .block-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.focus-card .block-time-range {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 20px;
+}
+.focus-card .timer {
+  font-size: 3rem;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  color: #6c63ff;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.focus-card.enrichment .timer {
+  color: #f0a050;
+}
+.focus-card .timer-label {
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Schedule List ── */
+.schedule-list {
+  list-style: none;
+}
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  background: #1a1d2e;
+  border: 1px solid #2a2d40;
+  transition: opacity 0.2s;
+}
+.schedule-item.completed {
+  opacity: 0.4;
+}
+.schedule-item.current {
+  border-color: #6c63ff;
+  background: #1c1f38;
+}
+.schedule-item.enrichment-item {
+  border-color: #3a2d1a;
+  background: #1e1c16;
+}
+.schedule-item .item-emoji {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+}
+.schedule-item .item-info {
+  flex: 1;
+  min-width: 0;
+}
+.schedule-item .item-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.schedule-item .item-time {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 2px;
+}
+.schedule-item .item-dur {
+  font-size: 0.8rem;
+  color: #555;
+  flex-shrink: 0;
+}
+
+/* ── Transition buffer ── */
+.schedule-item.buffer {
+  background: transparent;
+  border: none;
+  padding: 4px 16px;
+  justify-content: center;
+  opacity: 0.3;
+}
+.buffer-dots {
+  width: 2px;
+  height: 16px;
+  background: repeating-linear-gradient(to bottom, #444 0px, #444 3px, transparent 3px, transparent 6px);
+}
+
+/* ── Wind-down banner ── */
+.wind-down-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #2d1b4e, #1b2d4e);
+  color: #c9b8f0;
+  text-align: center;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 1000;
+  animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* ── Bottom Actions Bar ── */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0f1117;
+  border-top: 1px solid #1e2030;
+  padding: 12px 20px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  z-index: 100;
+}
+.bottom-bar .btn {
+  flex: 1;
+  max-width: 240px;
+}
+
+/* ── Nav tabs (bottom) ── */
+.nav-tabs {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #13151f;
+  border-top: 1px solid #1e2030;
+  display: flex;
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
+  z-index: 200;
+}
+.nav-tab {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 0.7rem;
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s;
+}
+.nav-tab .nav-icon {
+  display: block;
+  font-size: 1.3rem;
+  margin-bottom: 2px;
+}
+.nav-tab.active {
+  color: #6c63ff;
+}
+
+/* ── Settings sections ── */
+.settings-section {
+  margin-bottom: 28px;
+}
+.settings-section h3 {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #1e2030;
+}
+
+.enrichment-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #1a1d2e;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.enrichment-item-row .ei-name {
+  flex: 1;
+  font-size: 0.9rem;
+}
+.enrichment-item-row .ei-tags {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-left: 4px;
+}
+.tag-outdoors { background: #1a2e1a; color: #6ecf6e; }
+.tag-entertainment { background: #2e2a1a; color: #cfb96e; }
+.tag-social { background: #1a1e2e; color: #6e9fcf; }
+.tag-selfcare { background: #2e1a2e; color: #cf6ecf; }
+.tag-short { background: #1e1e1e; color: #999; }
+.tag-medium { background: #1e1e1e; color: #999; }
+.tag-long { background: #1e1e1e; color: #999; }
+
+/* ── Fixed events list ── */
+.fixed-event-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #1a1d2e;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.fixed-event-row .fe-info {
+  flex: 1;
+}
+.fixed-event-row .fe-day {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.fixed-event-row .fe-time {
+  font-size: 0.8rem;
+  color: #666;
+}
+.fixed-event-row .fe-name {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* ── History ── */
+.history-activity {
+  margin-bottom: 16px;
+}
+.history-activity .ha-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.history-activity .ha-stats {
+  font-size: 0.85rem;
+  color: #888;
+}
+.history-bar {
+  height: 4px;
+  background: #1e2030;
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.history-bar-fill {
+  height: 100%;
+  background: #6c63ff;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+/* ── Inline form rows ── */
+.inline-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.inline-row .form-group {
+  flex: 1;
+}
+
+/* ── Modal / Overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 500;
+  animation: fadeIn 0.15s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.modal-sheet {
+  background: #1a1d2e;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.2s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.modal-sheet h2 {
+  margin-bottom: 16px;
+}
+
+/* ── Day complete ── */
+.day-complete {
+  text-align: center;
+  padding: 60px 20px;
+}
+.day-complete .dc-emoji {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+.day-complete .dc-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.day-complete .dc-sub {
+  color: #888;
+  margin-bottom: 32px;
+}
+
+/* ── Non-negotiable editor rows ── */
+.nn-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: #1a1d2e;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+.nn-row .nn-name {
+  flex: 1;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.nn-row .nn-detail {
+  font-size: 0.8rem;
+  color: #888;
+}
+.nn-row input[type="number"] {
+  width: 70px;
+  padding: 8px;
+  text-align: center;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a2d40; border-radius: 2px; }
+
+/* ── Responsive ── */
+@media (min-width: 600px) {
+  .screen { padding: 32px 24px 100px; }
+  .focus-card { padding: 48px 32px; }
+}

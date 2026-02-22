@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="DayOS — Your personal life operating system. Build your day, execute block by block.">
+  <title>DayOS</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%230f1117'/%3E%3Ccircle cx='96' cy='80' r='40' fill='none' stroke='%236c63ff' stroke-width='6'/%3E%3Cline x1='96' y1='80' x2='96' y2='56' stroke='%236c63ff' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='96' y1='80' x2='112' y2='88' stroke='%236c63ff' stroke-width='4' stroke-linecap='round'/%3E%3Ctext x='96' y='150' text-anchor='middle' fill='%23e0e0e0' font-family='sans-serif' font-size='28' font-weight='bold'%3EDayOS%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════
+       SCREEN 1: START MY DAY
+       ════════════════════════════════════ -->
+  <div id="screenStart" class="screen">
+    <h1 class="brand">DayOS</h1>
+    <p class="brand-sub">Your personal life operating system</p>
+
+    <div class="form-group">
+      <label for="inputWake">Wake Time</label>
+      <input type="time" id="inputWake">
+    </div>
+
+    <div class="form-group">
+      <label for="inputNextWake">Next Wake Time (tomorrow)</label>
+      <input type="time" id="inputNextWake">
+    </div>
+
+    <div class="form-group">
+      <label>Today's Mood (optional)</label>
+      <div class="mood-selector">
+        <button class="mood-btn" data-mood="stay_in">
+          <span class="mood-emoji">🏠</span>
+          Stay In
+        </button>
+        <button class="mood-btn" data-mood="get_outside">
+          <span class="mood-emoji">🌤️</span>
+          Get Outside
+        </button>
+        <button class="mood-btn" data-mood="social">
+          <span class="mood-emoji">👋</span>
+          Feeling Social
+        </button>
+      </div>
+    </div>
+
+    <button id="btnBuildDay" class="btn btn-primary">Build My Day</button>
+  </div>
+
+  <!-- ════════════════════════════════════
+       SCREEN 2: BLOCK VIEW (FOCUS CARD)
+       ════════════════════════════════════ -->
+  <div id="screenBlock" class="screen hidden">
+    <div id="focusCard" class="focus-card">
+      <div id="blockEmoji" class="block-emoji"></div>
+      <div id="blockName" class="block-name"></div>
+      <div id="blockTimeRange" class="block-time-range"></div>
+      <div id="timerDisplay" class="timer">00:00</div>
+      <div id="timerLabelEl" class="timer-label">ELAPSED</div>
+    </div>
+
+    <button id="btnDone" class="btn btn-done">Done ✓</button>
+
+    <div style="display:flex;gap:10px;margin-top:12px;">
+      <button id="btnSeeFullDay" class="btn btn-secondary" style="flex:1;">See Full Day</button>
+      <button id="btnRecalculate" class="btn btn-secondary" style="flex:1;">Recalculate</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       SCREEN 3: FULL DAY VIEW
+       ════════════════════════════════════ -->
+  <div id="screenFull" class="screen hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="margin:0;">Today's Schedule</h2>
+      <button id="btnBackToCurrent" class="btn btn-secondary btn-small">← Current Block</button>
+    </div>
+
+    <ul id="fullDayList" class="schedule-list"></ul>
+  </div>
+
+  <!-- ════════════════════════════════════
+       SCREEN 4: SETTINGS
+       ════════════════════════════════════ -->
+  <div id="screenSettings" class="screen hidden">
+    <h1 style="margin-bottom:24px;">Settings</h1>
+
+    <!-- Non-negotiables -->
+    <div class="settings-section">
+      <h3>Non-Negotiables (duration in minutes)</h3>
+      <div id="nnList"></div>
+    </div>
+
+    <!-- Optional Priorities -->
+    <div class="settings-section">
+      <h3>Optional Priorities (duration in minutes)</h3>
+      <div id="opList"></div>
+    </div>
+
+    <!-- Enrichment Pool -->
+    <div class="settings-section">
+      <h3>Enrichment Pool</h3>
+      <div id="enrichmentList"></div>
+
+      <div class="card" style="margin-top:12px;">
+        <h3 style="border:none;padding:0;">Add New</h3>
+        <div class="inline-row" style="margin-bottom:10px;">
+          <div class="form-group" style="flex:3">
+            <label for="newEnrichName">Name</label>
+            <input type="text" id="newEnrichName" placeholder="e.g. Walk in the park">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label for="newEnrichEmoji">Emoji</label>
+            <input type="text" id="newEnrichEmoji" placeholder="🎯" maxlength="4">
+          </div>
+        </div>
+        <div class="inline-row" style="margin-bottom:12px;">
+          <div class="form-group">
+            <label for="newEnrichCategory">Category</label>
+            <select id="newEnrichCategory">
+              <option value="Outdoors">Outdoors</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Social">Social</option>
+              <option value="Self-care">Self-care</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="newEnrichDuration">Duration</label>
+            <select id="newEnrichDuration">
+              <option value="short">Short (&lt;30m)</option>
+              <option value="medium" selected>Medium (30-90m)</option>
+              <option value="long">Long (90m+)</option>
+            </select>
+          </div>
+        </div>
+        <button id="btnAddEnrichment" class="btn btn-secondary" style="width:100%;">+ Add to Pool</button>
+      </div>
+    </div>
+
+    <!-- Fixed Weekly Events -->
+    <div class="settings-section">
+      <h3>Weekly Fixed Events</h3>
+      <div id="fixedEventsList"></div>
+
+      <div class="card" style="margin-top:12px;">
+        <h3 style="border:none;padding:0;">Add Event</h3>
+        <div class="form-group">
+          <label for="newEventName">Event Name</label>
+          <input type="text" id="newEventName" placeholder="e.g. Dutch Class">
+        </div>
+        <div class="form-group">
+          <label for="newEventDay">Day</label>
+          <select id="newEventDay">
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+            <option>Sunday</option>
+          </select>
+        </div>
+        <div class="inline-row" style="margin-bottom:12px;">
+          <div class="form-group">
+            <label for="newEventStart">Start</label>
+            <input type="time" id="newEventStart">
+          </div>
+          <div class="form-group">
+            <label for="newEventEnd">End</label>
+            <input type="time" id="newEventEnd">
+          </div>
+        </div>
+        <button id="btnAddFixedEvent" class="btn btn-secondary" style="width:100%;">+ Add Event</button>
+      </div>
+    </div>
+
+    <!-- Activity History -->
+    <div class="settings-section">
+      <h3>Activity History &amp; Averages</h3>
+      <div id="historyList"></div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="settings-section">
+      <h3 style="color:#e74c3c;">Danger Zone</h3>
+      <button id="btnResetAll" class="btn btn-danger" style="width:100%;">Reset All Data</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       BOTTOM NAV
+       ════════════════════════════════════ -->
+  <nav class="nav-tabs">
+    <button id="navStart" class="nav-tab active">
+      <span class="nav-icon">☀️</span>
+      Start
+    </button>
+    <button id="navBlock" class="nav-tab">
+      <span class="nav-icon">▶️</span>
+      Focus
+    </button>
+    <button id="navFull" class="nav-tab">
+      <span class="nav-icon">📋</span>
+      Day
+    </button>
+    <button id="navSettings" class="nav-tab">
+      <span class="nav-icon">⚙️</span>
+      Settings
+    </button>
+  </nav>
+
+  <script src="./app.js"></script>
+</body>
+</html>
