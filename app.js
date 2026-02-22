@@ -489,22 +489,22 @@
     for (const nn of profile.nonNegotiables) {
       if (nn.id === 'gym' && gymWeekLog.count >= (nn.weeklyTarget || 4)) continue;
       const dur = getEffectiveDuration(nn.id, nn.defaultDuration);
-      container.innerHTML += '<div class="summary-chip">' + nn.emoji + ' ' + escapeHtml(nn.name) + ' <span style="color:#555">' + fmtDuration(dur) + '</span></div>';
+      container.innerHTML += '<div class="summary-chip">' + nn.emoji + ' ' + escapeHtml(nn.name) + ' <span style="color:#555d75">' + fmtDuration(dur) + '</span></div>';
     }
     for (const tt of todayTasks) {
-      container.innerHTML += '<div class="summary-chip">' + (tt.emoji || '📝') + ' ' + escapeHtml(tt.name) + ' <span style="color:#555">' + fmtDuration(tt.duration) + '</span></div>';
+      container.innerHTML += '<div class="summary-chip">' + (tt.emoji || '📝') + ' ' + escapeHtml(tt.name) + ' <span style="color:#555d75">' + fmtDuration(tt.duration) + '</span></div>';
     }
     for (const op of profile.optionalPriorities) {
       const dur = getEffectiveDuration(op.id, op.defaultDuration);
-      container.innerHTML += '<div class="summary-chip">' + op.emoji + ' ' + escapeHtml(op.name) + ' <span style="color:#555">' + fmtDuration(dur) + '</span></div>';
+      container.innerHTML += '<div class="summary-chip">' + op.emoji + ' ' + escapeHtml(op.name) + ' <span style="color:#555d75">' + fmtDuration(dur) + '</span></div>';
     }
     container.innerHTML += '<div class="summary-chip enrichment-chip">🎯 Enrichment</div>';
-    container.innerHTML += '<div class="summary-chip">🌙 Wind Down <span style="color:#555">30m</span></div>';
+    container.innerHTML += '<div class="summary-chip">🌙 Wind Down <span style="color:#555d75">30m</span></div>';
 
     const dayName = todayDayName();
     const todayFixed = profile.fixedEvents.filter(e => e.day === dayName);
     for (const fe of todayFixed) {
-      container.innerHTML += '<div class="summary-chip">📌 ' + escapeHtml(fe.name) + ' <span style="color:#555">' + fe.start + '–' + fe.end + '</span></div>';
+      container.innerHTML += '<div class="summary-chip">📌 ' + escapeHtml(fe.name) + ' <span style="color:#555d75">' + fe.start + '–' + fe.end + '</span></div>';
     }
   }
 
@@ -649,7 +649,7 @@
       '<div class="fullday-stat"><div class="fullday-stat-val">' + doneSoFar + '/' + totalBlocks + '</div><div class="fullday-stat-label">Done</div></div>' +
       '<div class="fullday-stat"><div class="fullday-stat-val">' + fmtDuration(totalPlannedMins) + '</div><div class="fullday-stat-label">Planned</div></div>' +
       '<div class="fullday-stat"><div class="fullday-stat-val">' + fmtDuration(workMins) + '</div><div class="fullday-stat-label">Work</div></div>' +
-      '<div class="fullday-stat"><div class="fullday-stat-val" style="color:#f0a050">' + fmtDuration(enrichMins) + '</div><div class="fullday-stat-label">Fun</div></div>';
+      '<div class="fullday-stat"><div class="fullday-stat-val" style="color:#e8914a">' + fmtDuration(enrichMins) + '</div><div class="fullday-stat-label">Fun</div></div>';
 
     // List
     const list = $('fullDayList');
@@ -816,7 +816,7 @@
         '</div>' +
         '<div class="ha-stats">' +
           hist.length + ' sessions · avg ' + fmtDuration(avg) +
-          (isLearned ? ' · <span style="color:#6c63ff">learned — using real avg</span>' : ' · ' + (ROLLING_THRESHOLD - hist.length) + ' more to learn') +
+          (isLearned ? ' · <span style="color:#e8a44a">learned — using real avg</span>' : ' · ' + (ROLLING_THRESHOLD - hist.length) + ' more to learn') +
           ' · default ' + fmtDuration(act.defaultDuration) +
         '</div>' +
         '<div class="history-bar"><div class="history-bar-fill" style="width:' + Math.min(100, (hist.length / ROLLING_THRESHOLD) * 100) + '%"></div></div>';

@@ -5,24 +5,24 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f1117",
-  "theme_color": "#0f1117",
+  "background_color": "#07090f",
+  "theme_color": "#07090f",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%230f1117'/%3E%3Ccircle cx='96' cy='80' r='40' fill='none' stroke='%236c63ff' stroke-width='6'/%3E%3Cline x1='96' y1='80' x2='96' y2='56' stroke='%236c63ff' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='96' y1='80' x2='112' y2='88' stroke='%236c63ff' stroke-width='4' stroke-linecap='round'/%3E%3Ctext x='96' y='150' text-anchor='middle' fill='%23e0e0e0' font-family='sans-serif' font-size='28' font-weight='bold'%3EDayOS%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%2307090f'/%3E%3Ccircle cx='96' cy='80' r='40' fill='none' stroke='%23e8a44a' stroke-width='6'/%3E%3Cline x1='96' y1='80' x2='96' y2='56' stroke='%23e8a44a' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='96' y1='80' x2='112' y2='88' stroke='%23e8a44a' stroke-width='4' stroke-linecap='round'/%3E%3Ctext x='96' y='150' text-anchor='middle' fill='%23e2e4ea' font-family='sans-serif' font-size='28' font-weight='bold'%3EDayOS%3C/text%3E%3C/svg%3E",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230f1117'/%3E%3Ccircle cx='256' cy='210' r='100' fill='none' stroke='%236c63ff' stroke-width='14'/%3E%3Cline x1='256' y1='210' x2='256' y2='145' stroke='%236c63ff' stroke-width='12' stroke-linecap='round'/%3E%3Cline x1='256' y1='210' x2='298' y2='232' stroke='%236c63ff' stroke-width='10' stroke-linecap='round'/%3E%3Ctext x='256' y='400' text-anchor='middle' fill='%23e0e0e0' font-family='sans-serif' font-size='72' font-weight='bold'%3EDayOS%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%2307090f'/%3E%3Ccircle cx='256' cy='210' r='100' fill='none' stroke='%23e8a44a' stroke-width='14'/%3E%3Cline x1='256' y1='210' x2='256' y2='145' stroke='%23e8a44a' stroke-width='12' stroke-linecap='round'/%3E%3Cline x1='256' y1='210' x2='298' y2='232' stroke='%23e8a44a' stroke-width='10' stroke-linecap='round'/%3E%3Ctext x='256' y='400' text-anchor='middle' fill='%23e2e4ea' font-family='sans-serif' font-size='72' font-weight='bold'%3EDayOS%3C/text%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230f1117'/%3E%3Ccircle cx='256' cy='210' r='100' fill='none' stroke='%236c63ff' stroke-width='14'/%3E%3Cline x1='256' y1='210' x2='256' y2='145' stroke='%236c63ff' stroke-width='12' stroke-linecap='round'/%3E%3Cline x1='256' y1='210' x2='298' y2='232' stroke='%236c63ff' stroke-width='10' stroke-linecap='round'/%3E%3Ctext x='256' y='400' text-anchor='middle' fill='%23e0e0e0' font-family='sans-serif' font-size='72' font-weight='bold'%3EDayOS%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%2307090f'/%3E%3Ccircle cx='256' cy='210' r='100' fill='none' stroke='%23e8a44a' stroke-width='14'/%3E%3Cline x1='256' y1='210' x2='256' y2='145' stroke='%23e8a44a' stroke-width='12' stroke-linecap='round'/%3E%3Cline x1='256' y1='210' x2='298' y2='232' stroke='%23e8a44a' stroke-width='10' stroke-linecap='round'/%3E%3Ctext x='256' y='400' text-anchor='middle' fill='%23e2e4ea' font-family='sans-serif' font-size='72' font-weight='bold'%3EDayOS%3C/text%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "maskable"
