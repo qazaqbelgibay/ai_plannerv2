@@ -96,6 +96,22 @@
       <div class="input-hint">This filters which enrichment activities get picked for you</div>
     </div>
 
+    <!-- Today's extra tasks -->
+    <div class="form-group">
+      <label>Anything extra for today?</label>
+      <div class="input-hint" style="margin-top:0;margin-bottom:8px;">One-off tasks like "Clean room", "Buy groceries", "Doctor appointment". These get scheduled into today only.</div>
+      <div id="todayTasksList"></div>
+      <div class="inline-row" style="margin-top:8px;">
+        <div class="form-group" style="flex:3;margin-bottom:0;">
+          <input type="text" id="newTodayTask" placeholder="e.g. Clean the room">
+        </div>
+        <div class="form-group" style="flex:1;margin-bottom:0;">
+          <input type="number" id="newTodayDur" placeholder="min" min="5" max="480" value="30">
+        </div>
+        <button id="btnAddTodayTask" class="btn btn-secondary btn-small" style="height:48px;">+ Add</button>
+      </div>
+    </div>
+
     <!-- What will be scheduled -->
     <div class="what-scheduled">
       <h3>What DayOS will schedule for you:</h3>

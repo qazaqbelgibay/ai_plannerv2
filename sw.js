@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dayos-v2';
+const CACHE_NAME = 'dayos-v3';
 const SHELL_ASSETS = [
   './',
   './index.html',

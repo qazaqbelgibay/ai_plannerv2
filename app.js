@@ -62,6 +62,8 @@
   // notes = [{ date: 'YYYY-MM-DD', time: ISO, activityId: str, activityName: str, emoji: str, text: str }]
   let blockNotes = load('dayos_blocknotes', {});
   // blockNotes = { "blockIndex": "note text" } — for current day only
+  let todayTasks = load('dayos_todaytasks', []);
+  // todayTasks = [{ id, name, duration, emoji }] — one-off tasks for today, cleared on new day
   let windDownNotified = false;
   let timerInterval = null;
 
@@ -188,6 +190,10 @@
     for (const nn of profile.nonNegotiables) {
       if (nn.id === 'gym' && gymWeekLog.count >= (nn.weeklyTarget || 4)) continue;
       activities.push({ ...nn, duration: getEffectiveDuration(nn.id, nn.defaultDuration), priority: 'non-negotiable', type: 'work' });
+    }
+    // Today's one-off tasks — scheduled right after non-negotiables
+    for (const tt of todayTasks) {
+      activities.push({ id: tt.id, name: tt.name, emoji: tt.emoji || '📝', duration: tt.duration, energy: 'medium', priority: 'today-task', type: 'work' });
     }
     for (const op of profile.optionalPriorities) {
       activities.push({ ...op, duration: getEffectiveDuration(op.id, op.defaultDuration), priority: 'optional', type: 'work' });
@@ -416,6 +422,7 @@
     if (!nextWakeInput.value) nextWakeInput.value = '07:00';
 
     updateDayPreview();
+    renderTodayTasks();
     renderScheduleSummary();
     showScreen('screenStart');
   }
@@ -438,6 +445,41 @@
     $('previewHours').textContent = availHours.toFixed(1) + 'h';
   }
 
+  function renderTodayTasks () {
+    const container = $('todayTasksList');
+    container.innerHTML = '';
+    todayTasks.forEach(t => {
+      const row = document.createElement('div');
+      row.className = 'today-task-row';
+      row.innerHTML =
+        '<span>' + (t.emoji || '📝') + '</span>' +
+        '<span class="tt-name">' + escapeHtml(t.name) + '</span>' +
+        '<span class="tt-dur">' + fmtDuration(t.duration) + '</span>' +
+        '<button class="btn btn-danger btn-small" data-id="' + t.id + '" style="padding:4px 8px;font-size:0.7rem;">✕</button>';
+      container.appendChild(row);
+    });
+    container.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', function () {
+        todayTasks = todayTasks.filter(t => t.id !== this.dataset.id);
+        save('dayos_todaytasks', todayTasks);
+        renderTodayTasks();
+        renderScheduleSummary();
+      });
+    });
+  }
+
+  function addTodayTask () {
+    const name = $('newTodayTask').value.trim();
+    const dur = parseInt($('newTodayDur').value) || 30;
+    if (!name) return;
+    todayTasks.push({ id: 'tt' + Date.now(), name: name, duration: dur, emoji: '📝' });
+    save('dayos_todaytasks', todayTasks);
+    $('newTodayTask').value = '';
+    $('newTodayDur').value = '30';
+    renderTodayTasks();
+    renderScheduleSummary();
+  }
+
   function renderScheduleSummary () {
     const container = $('scheduleSummary');
     container.innerHTML = '';
@@ -447,11 +489,14 @@
     for (const nn of profile.nonNegotiables) {
       if (nn.id === 'gym' && gymWeekLog.count >= (nn.weeklyTarget || 4)) continue;
       const dur = getEffectiveDuration(nn.id, nn.defaultDuration);
-      container.innerHTML += '<div class="summary-chip">' + nn.emoji + ' ' + nn.name + ' <span style="color:#555">' + fmtDuration(dur) + '</span></div>';
+      container.innerHTML += '<div class="summary-chip">' + nn.emoji + ' ' + escapeHtml(nn.name) + ' <span style="color:#555">' + fmtDuration(dur) + '</span></div>';
+    }
+    for (const tt of todayTasks) {
+      container.innerHTML += '<div class="summary-chip">' + (tt.emoji || '📝') + ' ' + escapeHtml(tt.name) + ' <span style="color:#555">' + fmtDuration(tt.duration) + '</span></div>';
     }
     for (const op of profile.optionalPriorities) {
       const dur = getEffectiveDuration(op.id, op.defaultDuration);
-      container.innerHTML += '<div class="summary-chip">' + op.emoji + ' ' + op.name + ' <span style="color:#555">' + fmtDuration(dur) + '</span></div>';
+      container.innerHTML += '<div class="summary-chip">' + op.emoji + ' ' + escapeHtml(op.name) + ' <span style="color:#555">' + fmtDuration(dur) + '</span></div>';
     }
     container.innerHTML += '<div class="summary-chip enrichment-chip">🎯 Enrichment</div>';
     container.innerHTML += '<div class="summary-chip">🌙 Wind Down <span style="color:#555">30m</span></div>';
@@ -995,10 +1040,12 @@
     todaySchedule = null;
     dayState = null;
     blockNotes = {};
+    todayTasks = [];
     windDownNotified = false;
     localStorage.removeItem('dayos_schedule');
     localStorage.removeItem('dayos_daystate');
     localStorage.removeItem('dayos_blocknotes');
+    localStorage.removeItem('dayos_todaytasks');
     const banner = document.getElementById('windDownBanner');
     if (banner) banner.remove();
     $('btnDone').classList.remove('hidden');
@@ -1018,6 +1065,7 @@
     localStorage.removeItem('dayos_daylog');
     localStorage.removeItem('dayos_notes');
     localStorage.removeItem('dayos_blocknotes');
+    localStorage.removeItem('dayos_todaytasks');
     profile = defaultProfile();
     todaySchedule = null;
     dayState = null;
@@ -1026,6 +1074,7 @@
     dayLog = [];
     notes = [];
     blockNotes = {};
+    todayTasks = [];
     windDownNotified = false;
     renderStartScreen();
   }
@@ -1133,6 +1182,8 @@
       btn.textContent = 'Saved!';
       setTimeout(() => { btn.textContent = 'Save Note'; }, 1200);
     });
+    $('btnAddTodayTask').addEventListener('click', addTodayTask);
+    $('newTodayTask').addEventListener('keydown', function (e) { if (e.key === 'Enter') addTodayTask(); });
     $('btnAddEnrichment').addEventListener('click', addEnrichmentItem);
     $('btnAddFixedEvent').addEventListener('click', addFixedEvent);
     $('btnResetAll').addEventListener('click', resetAll);
