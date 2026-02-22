@@ -18,21 +18,67 @@
        SCREEN 1: START MY DAY
        ════════════════════════════════════ -->
   <div id="screenStart" class="screen">
-    <h1 class="brand">DayOS</h1>
-    <p class="brand-sub">Your personal life operating system</p>
+    <div class="start-header">
+      <h1 class="brand">DayOS</h1>
+      <div id="todayDate" class="today-date"></div>
+    </div>
+
+    <div class="start-greeting" id="startGreeting"></div>
+
+    <!-- Step-by-step guide -->
+    <div class="how-it-works">
+      <div class="how-step">
+        <span class="how-num">1</span>
+        <span>Set your wake time and tomorrow's wake time below</span>
+      </div>
+      <div class="how-step">
+        <span class="how-num">2</span>
+        <span>Pick your mood for today (optional)</span>
+      </div>
+      <div class="how-step">
+        <span class="how-num">3</span>
+        <span>Hit "Build My Day" and DayOS fills your entire schedule automatically</span>
+      </div>
+      <div class="how-step">
+        <span class="how-num">4</span>
+        <span>Execute block by block — tap "Done" when you finish each one</span>
+      </div>
+    </div>
 
     <div class="form-group">
-      <label for="inputWake">Wake Time</label>
+      <label for="inputWake">What time did you wake up?</label>
       <input type="time" id="inputWake">
+      <div class="input-hint">This is when your available time starts</div>
     </div>
 
     <div class="form-group">
-      <label for="inputNextWake">Next Wake Time (tomorrow)</label>
+      <label for="inputNextWake">When do you want to wake up tomorrow?</label>
       <input type="time" id="inputNextWake">
+      <div class="input-hint">DayOS calculates your bedtime (8h sleep) and schedules backwards</div>
+    </div>
+
+    <!-- Preview card -->
+    <div id="dayPreview" class="day-preview card">
+      <div class="preview-row">
+        <span class="preview-label">Your day</span>
+        <span id="previewRange" class="preview-value">--:-- to --:--</span>
+      </div>
+      <div class="preview-row">
+        <span class="preview-label">Wind down at</span>
+        <span id="previewWindDown" class="preview-value">--:--</span>
+      </div>
+      <div class="preview-row">
+        <span class="preview-label">Sleep at</span>
+        <span id="previewSleep" class="preview-value">--:--</span>
+      </div>
+      <div class="preview-row">
+        <span class="preview-label">Available hours</span>
+        <span id="previewHours" class="preview-value accent">--</span>
+      </div>
     </div>
 
     <div class="form-group">
-      <label>Today's Mood (optional)</label>
+      <label>How are you feeling today?</label>
       <div class="mood-selector">
         <button class="mood-btn" data-mood="stay_in">
           <span class="mood-emoji">🏠</span>
@@ -47,21 +93,40 @@
           Feeling Social
         </button>
       </div>
+      <div class="input-hint">This filters which enrichment activities get picked for you</div>
+    </div>
+
+    <!-- What will be scheduled -->
+    <div class="what-scheduled">
+      <h3>What DayOS will schedule for you:</h3>
+      <div id="scheduleSummary" class="schedule-summary"></div>
     </div>
 
     <button id="btnBuildDay" class="btn btn-primary">Build My Day</button>
+    <div class="input-hint" style="text-align:center;margin-top:8px;">You can always recalculate mid-day if things change</div>
   </div>
 
   <!-- ════════════════════════════════════
        SCREEN 2: BLOCK VIEW (FOCUS CARD)
        ════════════════════════════════════ -->
   <div id="screenBlock" class="screen hidden">
+    <div class="block-header">
+      <div id="blockDateHeader" class="block-date-header"></div>
+      <div id="blockProgress" class="block-progress"></div>
+    </div>
+
     <div id="focusCard" class="focus-card">
       <div id="blockEmoji" class="block-emoji"></div>
       <div id="blockName" class="block-name"></div>
       <div id="blockTimeRange" class="block-time-range"></div>
       <div id="timerDisplay" class="timer">00:00</div>
       <div id="timerLabelEl" class="timer-label">ELAPSED</div>
+    </div>
+
+    <!-- Notes area -->
+    <div class="notes-area">
+      <textarea id="blockNotes" class="block-notes-input" placeholder="Add a note for this block... (thoughts, progress, reminders)" rows="2"></textarea>
+      <button id="btnSaveNote" class="btn btn-secondary btn-small">Save Note</button>
     </div>
 
     <button id="btnDone" class="btn btn-done">Done ✓</button>
@@ -76,16 +141,80 @@
        SCREEN 3: FULL DAY VIEW
        ════════════════════════════════════ -->
   <div id="screenFull" class="screen hidden">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <h2 style="margin:0;">Today's Schedule</h2>
+    <div class="fullday-header">
+      <div>
+        <h2 id="fullDayTitle" style="margin:0;"></h2>
+        <div id="fullDayDate" class="fullday-date"></div>
+      </div>
       <button id="btnBackToCurrent" class="btn btn-secondary btn-small">← Current Block</button>
     </div>
+
+    <!-- Day summary bar -->
+    <div id="fullDaySummary" class="fullday-summary"></div>
 
     <ul id="fullDayList" class="schedule-list"></ul>
   </div>
 
   <!-- ════════════════════════════════════
-       SCREEN 4: SETTINGS
+       SCREEN 4: STATISTICS
+       ════════════════════════════════════ -->
+  <div id="screenStats" class="screen hidden">
+    <h1 style="margin-bottom:4px;">Statistics</h1>
+    <p class="brand-sub" style="margin-bottom:20px;">Your behavior patterns over time</p>
+
+    <!-- Streak card -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div id="statTotalDays" class="stat-number">0</div>
+        <div class="stat-label">Days Built</div>
+      </div>
+      <div class="stat-card">
+        <div id="statStreak" class="stat-number">0</div>
+        <div class="stat-label">Day Streak</div>
+      </div>
+      <div class="stat-card">
+        <div id="statBlocksDone" class="stat-number">0</div>
+        <div class="stat-label">Blocks Done</div>
+      </div>
+      <div class="stat-card">
+        <div id="statTotalHours" class="stat-number">0</div>
+        <div class="stat-label">Total Hours</div>
+      </div>
+    </div>
+
+    <!-- This week overview -->
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="margin-bottom:12px;">This Week</h3>
+      <div id="weekGrid" class="week-grid"></div>
+    </div>
+
+    <!-- Activity breakdown -->
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="margin-bottom:12px;">Time by Activity</h3>
+      <div id="activityBreakdown"></div>
+    </div>
+
+    <!-- Per-activity detail -->
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="margin-bottom:12px;">Activity Averages (Learning Engine)</h3>
+      <div id="activityAverages"></div>
+    </div>
+
+    <!-- Recent days log -->
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="margin-bottom:12px;">Recent Days</h3>
+      <div id="recentDaysLog"></div>
+    </div>
+
+    <!-- Notes journal -->
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="margin-bottom:12px;">Notes Journal</h3>
+      <div id="notesJournal"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       SCREEN 5: SETTINGS
        ════════════════════════════════════ -->
   <div id="screenSettings" class="screen hidden">
     <h1 style="margin-bottom:24px;">Settings</h1>
@@ -179,12 +308,6 @@
       </div>
     </div>
 
-    <!-- Activity History -->
-    <div class="settings-section">
-      <h3>Activity History &amp; Averages</h3>
-      <div id="historyList"></div>
-    </div>
-
     <!-- Danger Zone -->
     <div class="settings-section">
       <h3 style="color:#e74c3c;">Danger Zone</h3>
@@ -207,6 +330,10 @@
     <button id="navFull" class="nav-tab">
       <span class="nav-icon">📋</span>
       Day
+    </button>
+    <button id="navStats" class="nav-tab">
+      <span class="nav-icon">📊</span>
+      Stats
     </button>
     <button id="navSettings" class="nav-tab">
       <span class="nav-icon">⚙️</span>

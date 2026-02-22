@@ -30,8 +30,130 @@ h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; color: #b0b0b0; }
 p { line-height: 1.5; color: #a0a0a0; }
 
 /* ── Brand ── */
-.brand { color: #6c63ff; }
+.brand { color: #6c63ff; margin-bottom: 0; }
 .brand-sub { font-size: 0.9rem; color: #666; margin-bottom: 32px; }
+
+/* ── Start Screen Header ── */
+.start-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.today-date {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 500;
+}
+.start-greeting {
+  font-size: 1.1rem;
+  color: #a0a0a0;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+/* ── How it works steps ── */
+.how-it-works {
+  background: #151722;
+  border: 1px solid #1e2030;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.how-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 0.88rem;
+  color: #999;
+  line-height: 1.4;
+}
+.how-step + .how-step {
+  border-top: 1px solid #1a1d2e;
+  padding-top: 8px;
+  margin-top: 2px;
+}
+.how-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  background: #6c63ff;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Input hints ── */
+.input-hint {
+  font-size: 0.78rem;
+  color: #555;
+  margin-top: 6px;
+  line-height: 1.3;
+}
+
+/* ── Day preview card ── */
+.day-preview {
+  margin-bottom: 20px;
+  padding: 16px 18px;
+}
+.preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+.preview-row + .preview-row {
+  border-top: 1px solid #1e2030;
+}
+.preview-label {
+  font-size: 0.85rem;
+  color: #777;
+}
+.preview-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c0c0c0;
+  font-variant-numeric: tabular-nums;
+}
+.preview-value.accent {
+  color: #6c63ff;
+}
+
+/* ── What will be scheduled ── */
+.what-scheduled {
+  margin-bottom: 24px;
+}
+.what-scheduled h3 {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+.schedule-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.summary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #1a1d2e;
+  border: 1px solid #2a2d40;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  color: #bbb;
+}
+.summary-chip.enrichment-chip {
+  border-color: #3a2d1a;
+  background: #1e1c16;
+  color: #d4a86a;
+}
 
 /* ── Buttons ── */
 .btn {
@@ -94,7 +216,8 @@ p { line-height: 1.5; color: #a0a0a0; }
 input[type="time"],
 input[type="text"],
 input[type="number"],
-select {
+select,
+textarea {
   width: 100%;
   padding: 14px 16px;
   background: #1a1d2e;
@@ -105,13 +228,20 @@ select {
   outline: none;
   transition: border-color 0.2s;
   -webkit-appearance: none;
+  font-family: inherit;
 }
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
   border-color: #6c63ff;
 }
 input[type="time"] {
   font-size: 1.2rem;
   text-align: center;
+}
+textarea {
+  resize: vertical;
+  min-height: 44px;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 label {
@@ -132,7 +262,7 @@ label {
 .mood-selector {
   display: flex;
   gap: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
 }
 .mood-btn {
   flex: 1;
@@ -167,6 +297,24 @@ label {
   margin-bottom: 16px;
 }
 
+/* ── Block View Header ── */
+.block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.block-date-header {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+.block-progress {
+  font-size: 0.8rem;
+  color: #6c63ff;
+  font-weight: 600;
+}
+
 /* ── Block View (Focus Card) ── */
 .focus-card {
   background: #1a1d2e;
@@ -174,7 +322,7 @@ label {
   border-radius: 24px;
   padding: 40px 24px;
   text-align: center;
-  margin: 24px 0;
+  margin: 8px 0 16px;
   position: relative;
   overflow: hidden;
 }
@@ -221,6 +369,62 @@ label {
   color: #666;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* ── Notes Area ── */
+.notes-area {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.block-notes-input {
+  flex: 1;
+  min-height: 42px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+}
+.notes-area .btn-small {
+  margin-top: 0;
+  white-space: nowrap;
+  height: 42px;
+}
+
+/* ── Full Day View Header ── */
+.fullday-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.fullday-date {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 2px;
+}
+.fullday-summary {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #151722;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+.fullday-stat {
+  text-align: center;
+  min-width: 60px;
+}
+.fullday-stat-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #6c63ff;
+}
+.fullday-stat-label {
+  font-size: 0.7rem;
+  color: #555;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 
 /* ── Schedule List ── */
@@ -271,6 +475,15 @@ label {
   color: #666;
   margin-top: 2px;
 }
+.schedule-item .item-note {
+  font-size: 0.78rem;
+  color: #6c63ff;
+  margin-top: 3px;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .schedule-item .item-dur {
   font-size: 0.8rem;
   color: #555;
@@ -311,26 +524,6 @@ label {
   to { transform: translateY(0); }
 }
 
-/* ── Bottom Actions Bar ── */
-.bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #0f1117;
-  border-top: 1px solid #1e2030;
-  padding: 12px 20px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  z-index: 100;
-}
-.bottom-bar .btn {
-  flex: 1;
-  max-width: 240px;
-}
-
 /* ── Nav tabs (bottom) ── */
 .nav-tabs {
   position: fixed;
@@ -349,7 +542,7 @@ label {
   background: none;
   border: none;
   color: #555;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-align: center;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -357,11 +550,177 @@ label {
 }
 .nav-tab .nav-icon {
   display: block;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-bottom: 2px;
 }
 .nav-tab.active {
   color: #6c63ff;
+}
+
+/* ── Statistics ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.stat-card {
+  background: #1a1d2e;
+  border: 1px solid #2a2d40;
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+}
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #6c63ff;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* Week grid */
+.week-grid {
+  display: flex;
+  gap: 6px;
+}
+.week-day-col {
+  flex: 1;
+  text-align: center;
+}
+.week-day-label {
+  font-size: 0.7rem;
+  color: #555;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.week-day-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.week-day-dot.done {
+  background: #1e3a1e;
+  color: #6ecf6e;
+}
+.week-day-dot.today {
+  background: #1c1f38;
+  color: #6c63ff;
+  border: 2px solid #6c63ff;
+}
+.week-day-dot.empty {
+  background: #1a1d2e;
+  color: #333;
+}
+
+/* Activity breakdown bars */
+.activity-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.activity-bar-label {
+  width: 90px;
+  font-size: 0.8rem;
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.activity-bar-track {
+  flex: 1;
+  height: 10px;
+  background: #1e2030;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.activity-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s;
+}
+.activity-bar-fill.work { background: #6c63ff; }
+.activity-bar-fill.enrichment { background: #f0a050; }
+.activity-bar-value {
+  width: 45px;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Recent days log */
+.recent-day-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #1e2030;
+}
+.recent-day-row:last-child { border-bottom: none; }
+.recent-day-date {
+  min-width: 50px;
+  font-size: 0.8rem;
+  color: #888;
+  font-weight: 500;
+}
+.recent-day-blocks {
+  flex: 1;
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+.recent-day-block-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+.recent-day-block-dot.work-dot { background: #6c63ff; }
+.recent-day-block-dot.enrichment-dot { background: #f0a050; }
+.recent-day-block-dot.fixed-dot { background: #555; }
+.recent-day-count {
+  font-size: 0.75rem;
+  color: #666;
+  min-width: 25px;
+  text-align: right;
+}
+
+/* Notes journal */
+.note-entry {
+  padding: 10px 0;
+  border-bottom: 1px solid #1e2030;
+}
+.note-entry:last-child { border-bottom: none; }
+.note-entry-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.note-entry-activity {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.note-entry-date {
+  font-size: 0.75rem;
+  color: #555;
+}
+.note-entry-text {
+  font-size: 0.85rem;
+  color: #aaa;
+  line-height: 1.4;
 }
 
 /* ── Settings sections ── */
@@ -434,7 +793,7 @@ label {
   color: #aaa;
 }
 
-/* ── History ── */
+/* ── History (in stats now) ── */
 .history-activity {
   margin-bottom: 16px;
 }
